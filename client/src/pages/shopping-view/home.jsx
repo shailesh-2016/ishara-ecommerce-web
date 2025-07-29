@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
-import bannerOne from "../../assets/banner-1.webp";
-import bannerTwo from "../../assets/banner-2.webp";
-import bannerThree from "../../assets/banner-3.webp";
+
 import {
   Airplay,
   BabyIcon,
@@ -27,7 +25,8 @@ import {
 import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { useNavigate } from "react-router-dom";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
 
@@ -60,7 +59,7 @@ function ShoppingHome() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  
 
   function handleNavigateToListingPage(getCurrentItem, section) {
     sessionStorage.removeItem("filters");
@@ -86,9 +85,7 @@ function ShoppingHome() {
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
-        toast({
-          title: "Product is added to cart",
-        });
+        toast.success("Product is added to cart");
       }
     });
   }
@@ -172,10 +169,10 @@ function ShoppingHome() {
                 onClick={() =>
                   handleNavigateToListingPage(categoryItem, "category")
                 }
-                className="cursor-pointer hover:shadow-lg transition-shadow"
+                className="cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300 bg-white rounded-xl border border-gray-200"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
-                  <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
+                  <categoryItem.icon className="w-12 h-12 mb-4 text-primary transition-colors duration-300 group-hover:text-black" />
                   <span className="font-bold">{categoryItem.label}</span>
                 </CardContent>
               </Card>
@@ -191,10 +188,10 @@ function ShoppingHome() {
             {brandsWithIcon.map((brandItem) => (
               <Card
                 onClick={() => handleNavigateToListingPage(brandItem, "brand")}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
+                className="cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300 bg-white rounded-xl border border-gray-200"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
-                  <brandItem.icon className="w-12 h-12 mb-4 text-primary" />
+                  <brandItem.icon className="w-12 h-12 mb-4 text-primary transition-colors duration-300 group-hover:text-black" />
                   <span className="font-bold">{brandItem.label}</span>
                 </CardContent>
               </Card>

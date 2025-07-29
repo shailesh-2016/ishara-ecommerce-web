@@ -35,17 +35,13 @@ function MenuItems() {
       getCurrentMenuItem.id !== "home" &&
       getCurrentMenuItem.id !== "products" &&
       getCurrentMenuItem.id !== "search"
-        ? {
-            category: [getCurrentMenuItem.id],
-          }
+        ? { category: [getCurrentMenuItem.id] }
         : null;
 
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
 
     location.pathname.includes("listing") && currentFilter !== null
-      ? setSearchParams(
-          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-        )
+      ? setSearchParams(new URLSearchParams(`?category=${getCurrentMenuItem.id}`))
       : navigate(getCurrentMenuItem.path);
   }
 
@@ -54,8 +50,11 @@ function MenuItems() {
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Label
           onClick={() => handleNavigate(menuItem)}
-          className="text-sm font-medium cursor-pointer"
           key={menuItem.id}
+          className="relative cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground
+                     after:content-[''] after:absolute after:left-0 after:-bottom-1 
+                     after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 
+                     hover:after:w-full"
         >
           {menuItem.label}
         </Label>
@@ -63,6 +62,7 @@ function MenuItems() {
     </nav>
   );
 }
+
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
@@ -79,7 +79,7 @@ function HeaderRightContent() {
     dispatch(fetchCartItems(user?.id));
   }, [dispatch]);
 
-  console.log(cartItems, "sangam");
+  // console.log(cartItems, "sangam");
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
@@ -140,7 +140,7 @@ function ShoppingHeader() {
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/shop/home" className="flex items-center gap-2">
           <HousePlug className="h-6 w-6" />
-          <span className="font-bold">Ecommerce</span>
+          <span className="font-bold">Ishara Ecommerce</span>
         </Link>
         <Sheet>
           <SheetTrigger asChild>
