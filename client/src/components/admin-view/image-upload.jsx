@@ -6,6 +6,8 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function ProductImageUpload({
   imageFile,
   setImageFile,
@@ -18,13 +20,8 @@ function ProductImageUpload({
 }) {
   const inputRef = useRef(null);
 
-  console.log(isEditMode, "isEditMode");
-
   function handleImageFileChange(event) {
-    console.log(event.target.files, "event.target.files");
     const selectedFile = event.target.files?.[0];
-    console.log(selectedFile);
-
     if (selectedFile) setImageFile(selectedFile);
   }
 
@@ -46,17 +43,22 @@ function ProductImageUpload({
   }
 
   async function uploadImageToCloudinary() {
-    setImageLoadingState(true);
-    const data = new FormData();
-    data.append("my_file", imageFile);
-    const response = await axios.post(
-      "http://localhost:8080/api/admin/products/upload-image",
-      data
-    );
-    console.log(response, "response");
+    try {
+      setImageLoadingState(true);
+      const data = new FormData();
+      data.append("my_file", imageFile);
 
-    if (response?.data?.success) {
-      setUploadedImageUrl(response.data.result.url);
+      const response = await axios.post(
+        `${API_BASE_URL}/admin/products/upload-image`,
+        data
+      );
+
+      if (response?.data?.success) {
+        setUploadedImageUrl(response.data.result.url);
+      }
+    } catch (error) {
+      console.error("Image upload failed", error);
+    } finally {
       setImageLoadingState(false);
     }
   }
@@ -66,9 +68,7 @@ function ProductImageUpload({
   }, [imageFile]);
 
   return (
-    <div
-      className={`w-full  mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}
-    >
+    <div className={`w-full mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}>
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
       <div
         onDragOver={handleDragOver}

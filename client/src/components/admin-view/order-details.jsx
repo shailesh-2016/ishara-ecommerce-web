@@ -10,7 +10,7 @@ import {
   getOrderDetailsForAdmin,
   updateOrderStatus,
 } from "@/store/admin/order-slice";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 
 const initialFormData = {
   status: "",
@@ -35,9 +35,7 @@ function AdminOrderDetailsView({ orderDetails }) {
         dispatch(getOrderDetailsForAdmin(orderDetails?._id));
         dispatch(getAllOrdersForAdmin());
         setFormData(initialFormData);
-        toast({
-          title: data?.payload?.message,
-        });
+        toast(data?.payload?.message);
       }
     });
   }
